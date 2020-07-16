@@ -28,24 +28,28 @@ public class MajorServiceImplTest {
 
     @Test
     public void add(){
+
+      for(int i=0; i<20; i++){
         Major major = new Major();
-        major.setMname("测试1");
-        major.setCid(2);
-        major.setCredit(20);
+        major.setMname("测试"+i);
+            major.setLifeyear(3);
+            major.setCid(2);
+            major.setCredit(20);
         System.out.println(majorService.add(major));
+        }
     }
 
     @Test
     public void update(){
-        Major major = majorService.getById(4);
+        Major major = majorService.getById(7);
         major.setIntroduction("自我介绍哈哈");
         System.out.println(majorService.update(major));
     }
 
     @Test
     public void delete(){
-
-        System.out.println(majorService.delete(14));
+        boolean delete = majorService.delete(14);
+        System.out.println(delete);
     }
     @Test
     public void getAll(){
@@ -65,4 +69,6 @@ public class MajorServiceImplTest {
             System.out.println(item);
         }
     }
+
 }
+
