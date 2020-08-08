@@ -21,9 +21,11 @@ function initEvent() {
         var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
 
         if (layEvent === 'detail') { //查看
-            //do somehing
-            //layer.msg('ID：' + data.mid + ' 的查看操作');
-            showMajorInfo(data.mid);
+            var mid=  data.mid;
+
+           var mname =  data.mname;
+
+            showMajorInfo(mid);
 
         } else if (layEvent === 'del') { //删除
             layer.confirm('真的删除行么', function (index) {
@@ -33,14 +35,11 @@ function initEvent() {
                 layer.close(index);
             });
         } else if (layEvent === 'edit') { //编辑
-            //do something
-            //layer.alert('编辑行：<br>' + JSON.stringify(data))
             toEditMajorInfo(data.mid);
         } else if (layEvent === 'LAYTABLE_TIPS') {
             layer.alert('Hi，头部工具栏扩展的右侧图标。');
         }
     });
-
 }
 //分页查询
 function fenye() {
@@ -50,7 +49,6 @@ function fenye() {
         , height: 520
         , url: baseUrl + 'major/list' //数据接口
         , page: true //开启分页
-        , toolbar: false //仅开启工具栏，不显示左侧模板
         , parseData: function (res) { //res 即为原始返回的数据
             var status = res.status == 200 ? 0 : res.status;
             return {
@@ -62,7 +60,8 @@ function fenye() {
         }
         , where:{cid:cid}
         , cols: [[ //表头
-            {field: 'mid', title: 'ID', width: 80, sort: true, fixed: 'left'}
+            {type: 'checkbox', fixed: 'left'}
+            ,{field: 'mid', title: 'ID', width: 80, sort: true, fixed: 'left'}
             , {field: 'mname', title: '专业名称', width: 120}
             , {field: 'credit', title: '学分', width: 120, sort: true}
             , {field: 'lifeyear', title: '学制', width: 120}
@@ -78,18 +77,114 @@ function fenye() {
     });
 }
 
-
-
-
 //查看专业信息
 function showMajorInfo(majorId){
-    alert("查看专业id："+majorId);
+//查看专业弹框
+    layui.use(['layer', 'form', 'jquery'], function () { //独立版的layer无需执行这一句
+        var layer = layui.layer; //独立版的layer无需执行这一句
+        var $ = layui.jquery;
+        var form = layui.form;
+        //根据id获取改用户信息
+     $.ajax({
+            "url":  "major/shows",
+            "type": "GET",
+            "data": {majorId: majorId},
+            "dataType": "json",
+            success: function (data) {
+                //console.log(data);
+                $("#mids").val("");
+                $("#mnames").val("");
+                $("#credits").val("");
+                $("#lifeyears").val("");
+                $("#introductions").val("");
+                $("#cidSelect_updates").val("");
+                if (data && data.obj) {
+                    var majorList = data.obj;
+                    console.log(majorList)
+                    $("#mids").val(majorList.mid);
+                    $("#mnames").val(majorList.mname);
+                    $("#credits").val(majorList.credit);
+                    $("#lifeyears").val(majorList.lifeyear);
+                    $("#introductions").val(majorList.introduction);
+                    $("#cidSelect_updates").val(majorList.cid);
+                }
+            }
+        })
+        //事件
+        var addIndex = 0;
 
-
+            addIndex = layer.open({
+                type: 1,    //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                area: '500px',
+                //title: "",
+                content: $('#majorvevwForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
+    })
 }
 //编辑专业信息
 function toEditMajorInfo(majorId){
-    alert("编辑专业id："+majorId);
+    //修改专业弹框
+    layui.use(['layer', 'form', 'jquery'], function () { //独立版的layer无需执行这一句
+        var layer = layui.layer; //独立版的layer无需执行这一句
+        var $ = layui.jquery;
+        var form = layui.form;
+        //根据id获取改用户信息
+        $.ajax({
+            "url":  "major/shows",
+            "type": "GET",
+            "data": {majorId: majorId},
+            "dataType": "json",
+            success: function (data) {
+                //console.log(data);
+                $("#mid").val("");
+                $("#mname").val("");
+                $("#credit").val("");
+                $("#lifeyear").val("");
+                $("#introduction").val("");
+                $("#cidSelect_update").val("");
+                if (data && data.obj) {
+                    var majorList = data.obj;
+                    console.log(majorList)
+                    $("#mid").val(majorList.mid);
+                    $("#mname").val(majorList.mname);
+                    $("#credit").val(majorList.credit);
+                    $("#lifeyear").val(majorList.lifeyear);
+                    $("#introduction").val(majorList.introduction);
+                    $("#cidSelect_update").val(majorList.cid);
+                }
+            }
+        })
+        //事件
+         var addIndex = 0;
+         addIndex = layer.open({
+         type: 1,    //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+         area: '500px',
+         //title: "",
+         content: $('#majorUpdateForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+         });
+        $("#updateMajorBtn").click(function () {
+            //校验字段省略......
+            //操作dom提示错误信息
+            $.ajax({
+                type: "post",
+                url: baseUrl + 'major/update',
+                data: $("#majorUpdateForm").serialize(),
+
+                success: function (data) {
+                    console.log("添加结果：");
+                    console.log(data);
+
+                    layer.msg("保存成功！");
+                    location.href="major_list.html";
+                    layer.close(addIndex);//关闭指定层
+                    // layer.closeAll();
+                },
+                fail: function (data) {
+                    alert("保存失败")
+                }
+            });
+        })
+    });
 }
 
 //删除专业信息
@@ -115,7 +210,6 @@ function deleteEditMajorInfo(majorId){
         },
     })
 }
-
 
 //添加专业弹框
 layui.use(['layer', 'form', 'jquery'], function () { //独立版的layer无需执行这一句
@@ -149,10 +243,16 @@ layui.use(['layer', 'form', 'jquery'], function () { //独立版的layer无需�
                  var college = collegeList[i];
                  $("#cidSelect_update").append("<option value='"+college.cid+"'>"+college.cname+"</option>")
                  }
+                $("#cidSelect_vevw").html("<option value=\"0\">请选择学院</option>");
+                for(var i=0; i<collegeList.length; i++){
+                    var college = collegeList[i];
+                    $("#cidSelect_vevw").append("<option value='"+college.cid+"'>"+college.cname+"</option>")
+                }
                 //更新view， lay-filter="addForm" 所在容器内的全部 select 状态
                 form.render('select', 'majorListForm');
                 form.render('select', 'majorAddForm');
                 form.render('select', 'majorUpdateForm');
+                form.render('select', 'majorvevwForm');
             }
         }
     });
@@ -166,16 +266,6 @@ layui.use(['layer', 'form', 'jquery'], function () { //独立版的layer无需�
             content: $('#majorAddForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
         });
     })
-    /* //事件
-     var addIndex = 0;
-     $("#updateMajorBtn").click(function () {
-     addIndex = layer.open({
-     type: 1,    //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-     area: '500px',
-     //title: "",
-     content: $('#majorUpdateForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-     });
-     })*/
     $("#addMajorBtn").click(function () {
         //校验字段省略......
         //操作dom提示错误信息

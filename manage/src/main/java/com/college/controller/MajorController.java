@@ -42,13 +42,13 @@ public class MajorController {
             return RespBean.error("获取列表失败");
         }
     }
-
+   /* @ResponseBody
     @RequestMapping(value = "/show")
-    public String show(@RequestParam(name = "mid", required = false)  Integer mid, Model model){
+    public RespBean show(@RequestParam(name = "mid", required = false)  Integer mid, Model model){
         Major major = majorService.getById(mid);
         model.addAttribute("major", major);
-        return "../../detail_major";
-    }
+        return RespBean.ok("获取列表成功", major);
+    }*/
 
     @ResponseBody
     @RequestMapping("/add")
@@ -66,30 +66,27 @@ public class MajorController {
             return RespBean.error("添加失败");
         }
     }
-
-    @RequestMapping("/toupdate")
-    public String toupdate(@RequestParam("mid") Integer mid, Model model){
+    @ResponseBody
+    @RequestMapping(value = "/shows")
+    public RespBean show1(@RequestParam(name = "majorId", required = false)  Integer mid, Model model){
         Major major = majorService.getById(mid);
-
-        List<College> collegeList = collegeService.getList();
         model.addAttribute("major", major);
-        model.addAttribute("collegeList", collegeList);
-
-        return "../../update_major";
+        return RespBean.ok("获取列表成功", major);
     }
+
 
     @ResponseBody
     @RequestMapping("/update")
     public RespBean update(Major major){
         try {
             if(majorService.update(major)){
-                return RespBean.ok("添加成功");
+                return RespBean.ok("修改成功");
             }else {
-                return RespBean.error("添加失败");
+                return RespBean.error("修改失败");
             }
         }catch (Exception e) {
             e.printStackTrace();
-            return RespBean.error("添加失败");
+            return RespBean.error("修改失败");
         }
     }
 

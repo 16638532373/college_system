@@ -42,7 +42,7 @@ public class MajorServiceImplTest {
     @Test
     public void update(){
         Major major = majorService.getById(7);
-        major.setIntroduction("自我介绍哈哈");
+        major.setIntroduction("自我介绍哈哈1");
         System.out.println(majorService.update(major));
     }
 
@@ -61,10 +61,12 @@ public class MajorServiceImplTest {
     @Test
     public void getAll2(){
         Major major = new Major();
+        major.setCid(1);
         Page<Major> pageInfo = majorService.getAll(major, 1, 5);
         System.out.println("当前页："+pageInfo.getPageNo());
         System.out.println("每页条数："+pageInfo.getPageSize());
         System.out.println("总页数："+pageInfo.getPageCount());
+        //System.out.println("总条数："+pageInfo.getPageCount());
         for(Major item : pageInfo.getList()){
             System.out.println(item);
         }

@@ -37,7 +37,7 @@
 
         <!--查看，修改，删除按钮-->
         <script type="text/html" id="barDemo">
-            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" id="detail">查看</a>
             <a class="layui-btn layui-btn-xs" lay-event="edit" id="toUpdateMajorBtn">编辑</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
@@ -87,121 +87,94 @@
                 </div>
             </div>
         </form>
-        <!--“修改专业”弹框 -->
-        <form id="majorUpdateForm" class="layui-form" lay-filter="majorAddForm"
-              style="width: 400px;padding:10px;display: none"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
-            <h2 style="text-align: center">修改专业</h2>
-            <div class="layui-form-item">
-                <label class="layui-form-label">专业名称：</label>
-                <div class="layui-input-block">
-                    <input type="text" lay-verify="required"  name="mname" placeholder="请输入" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">学分：</label>
-                <div class="layui-input-block">
-                    <input type="text" lay-verify="required" name="credit" placeholder="请输入" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">毕业年限：</label>
-                <div class="layui-input-block">
-                    <input type="text" lay-verify="required" name="lifeyear" placeholder="请输入" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item layui-form-text" >
-                <label class="layui-form-label">专业介绍：</label>
-                <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" lay-verify="required" name="introduction" class="layui-textarea"></textarea>
-                </div>
-            </div>
-            <div class="layui-form-item" >
-                <label class="layui-form-label">学院名称：</label>
-                <div class="layui-input-block">
-                    <select id="cidSelect_update" name="cid" lay-verify="required">
-
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <a class="layui-btn" id="updateMajorBtn">立即提交</a>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
-            </div>
-        </form>
     </div>
 
 </body>
+<!--“修改专业”弹框 -->
+<form id="majorUpdateForm" class="layui-form" lay-filter="majorUpdateForm"
+      style="width: 400px;padding:10px;display: none"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <h2 style="text-align: center">修改专业</h2>
+    <input type="hidden" name="mid" id="mid" value="value">
+    <div class="layui-form-item">
+        <label class="layui-form-label">专业名称：</label>
+        <div class="layui-input-block">
+            <input type="text" lay-verify="required"  name="mname" id="mname" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">学分：</label>
+        <div class="layui-input-block">
+            <input type="text" lay-verify="required" name="credit" id="credit" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">毕业年限：</label>
+        <div class="layui-input-block">
+            <input type="text" lay-verify="required" name="lifeyear" id="lifeyear" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text" >
+        <label class="layui-form-label">专业介绍：</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" lay-verify="required" name="introduction" id="introduction" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <label class="layui-form-label">学院名称：</label>
+        <div class="layui-input-block">
+            <select id="cidSelect_update" name="cid" lay-verify="required">
 
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <a class="layui-btn" id="updateMajorBtn">立即提交</a>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--“查看专业”弹框 -->
+<form id="majorvevwForm" class="layui-form" lay-filter="majorvevwForm"
+      style="width: 400px;padding:10px;display: none"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <h2 style="text-align: center">查看专业信息</h2>
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业名称：</label>
+            <div class="layui-input-block">
+                <input type="text" lay-verify="required"  name="mname" id="mnames" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">学分：</label>
+            <div class="layui-input-block">
+                <input type="text" lay-verify="required" name="credit" id="credits" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">毕业年限：</label>
+            <div class="layui-input-block">
+                <input type="text" lay-verify="required" name="lifeyear" id="lifeyears" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" >
+            <label class="layui-form-label">专业介绍：</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" lay-verify="required" name="introduction" id="introductions" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">学院名称：</label>
+            <div class="layui-input-block">
+                <select id="cidSelect_vevw" name="cid" lay-verify="required">
+
+                </select>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+        </div>
+    </div>
+</form>
 <script src="js/major_list.js"></script>
-<script>
-    /*var baseUrl = "http://localhost:8080/";
 
-    /!*格式化页面或者数据 ctrl+shilf+L*!/
-    layui.use(['table', 'jquery'], function () {
-        var table = layui.table;
-        var $ = layui.jquery;
-
-        //渲染table
-        table.render({
-            elem: '#majorList'
-            , url: baseUrl + 'major/list'
-            , where: {cid: $("#collegeListSelect").val()}
-//            ,width: 800
-            // 自定义response解析
-            , parseData: function (res) { //res 即为原始返回的数据
-                var status = res.status == 200 ? 0 : res.status;
-                return {
-                    "code": status, //解析接口状态
-                    "msg": res.msg, //解析提示文本
-                    "count": res.obj.total, //解析数据长度
-                    "data": res.obj.list //解析数据列表
-                };
-            }
-            //请求添加过滤条件
-            /!*,request: {
-             pageName: 'currentPage' //页码的参数名称，默认：page
-             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
-             }*!/
-            , cols: [[
-                {field: 'mid', width: 80, title: 'ID', sort: true}
-                , {field: 'mname', width: 120, title: '专业名称'}
-                , {field: 'credit', width: 120, title: '学分', sort: true}
-                , {field: 'lifeyear', width: 120, title: '学时'}
-                , {field: 'introduction', title: '专业介绍', minWidth: 150}
-                , {field: 'cid', width: 120, title: '学院编号', sort: true}
-            ]]
-            , page: true
-        });
-    });
-
-
-    //通过ajax获取学院你列表
-    layui.use("jquery", function () {
-        var $ = layui.jquery;
-        $.ajax({
-            url: baseUrl + "/college/list",
-            type: "GET",
-            dataType: "json",
-            contentType: "application/json;charset=UTF-8",
-            success: function (data) {
-                //console.log(data);
-                if (data && data.obj) {
-                    $("#collegeListSelect").html("");
-                    $("#collegeListSelect").append("<option value='0' selected='selected'>全部</option>");
-                    var collgeList = data.obj;
-                    for (var i = 0; i < collgeList.length; i++) {
-                        var college = collgeList[i];
-                        $("#collegeListSelect").append("<option value='" + college.cid + "'>" + college.cname + "</option>")
-                    }
-                }
-            },
-            fail: function () {
-                alert("请求失败");
-            }
-        })
-    })*/
-
-</script>
 </html>
